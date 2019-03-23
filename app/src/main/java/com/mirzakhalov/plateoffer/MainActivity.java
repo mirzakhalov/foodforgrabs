@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -35,6 +36,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 
@@ -96,6 +99,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mAuth = FirebaseAuth.getInstance();
+
+
+
+    }
+
+    private void sendRegistrationToServer(final String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("myPref", MODE_PRIVATE);
+        String userUID = sharedPreferences.getString("uid", "");
+        if(!userUID.equals("")){
+            FirebaseDatabase.getInstance().getReference().child("Users/" + userUID + "/profile/token").setValue(token).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("Firebase Token", "Token refreshed to " + token);
+                }
+            });
+        }
+
     }
 
 
@@ -225,25 +245,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         editor.putString("uid", account.getUid());
                         editor.apply();
 
-                        Intent intent = new Intent(MainActivity.this, LandingPage.class);
-                        Log.d("uid", account.getUid());
+                        FirebaseInstanceId.getInstance().getInstanceId()
+                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w(TAG, "getInstanceId failed", task.getException());
+                                            return;
+                                        }
+
+                                        // Get new Instance ID token
+                                        String token = task.getResult().getToken();
+
+                                        sendRegistrationToServer(token);
+
+                                        Intent intent = new Intent(MainActivity.this, LandingPage.class);
+                                        Log.d("uid", account.getUid());
 
 
-                        //saveStringToShared(MainActivity.this, "uid", account.getUid());
-                        finish();
-                        startActivity(intent);
+
+                                        //saveStringToShared(MainActivity.this, "uid", account.getUid());
+                                        finish();
+                                        startActivity(intent);
+
+
+
+                                    }
+                                });
+
                     }
                     else{
-                        Intent register = new Intent(MainActivity.this, Register.class);
 
-                        register.putExtra("email", account.getEmail());
-                        register.putExtra("id", account.getUid());
-                        register.putExtra("name", account.getDisplayName());
-                        register.putExtra("phoneNumber", account.getPhoneNumber());
+                        FirebaseInstanceId.getInstance().getInstanceId()
+                                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w(TAG, "getInstanceId failed", task.getException());
+                                            return;
+                                        }
 
-                        saveStringToShared(MainActivity.this, "uid", account.getUid());
+                                        // Get new Instance ID token
+                                        String token = task.getResult().getToken();
+                                        sendRegistrationToServer(token);
+                                        Intent register = new Intent(MainActivity.this, Register.class);
 
-                        startActivity(register);
+
+                                        register.putExtra("email", account.getEmail());
+                                        register.putExtra("id", account.getUid());
+                                        register.putExtra("name", account.getDisplayName());
+                                        register.putExtra("phoneNumber", account.getPhoneNumber());
+
+                                        saveStringToShared(MainActivity.this, "uid", account.getUid());
+
+                                        startActivity(register);
+
+                                    }
+                                });
+
+
                     }
                 }
 
