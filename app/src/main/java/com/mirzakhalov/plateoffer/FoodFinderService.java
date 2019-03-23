@@ -15,9 +15,11 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.android.gms.location.FusedLocationProviderClient;
 
 public class FoodFinderService extends FirebaseMessagingService {
     private static final String TAG = "FOOD_FOR_GRABS_FIREBASE";
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
