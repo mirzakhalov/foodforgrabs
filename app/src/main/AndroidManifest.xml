@@ -3,6 +3,8 @@
     package="com.mirzakhalov.plateoffer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -11,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Avatar"></activity>
+        <activity
+            android:name=".LandingPage"
+            android:label="@string/title_activity_landing_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Avatar" />
         <activity android:name=".Register" />
         <activity android:name=".MainActivity">
             <intent-filter>

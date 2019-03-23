@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     if(uids.size() > 0){
-                        Intent intent = new Intent(MainActivity.this, Register.class);
+                        Intent intent = new Intent(MainActivity.this, LandingPage.class);
                         finish();
                         startActivity(intent);
                     }
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             };
 
-            FirebaseDatabase.getInstance().getReference().child("Users/").addValueEventListener(postListener);
+            FirebaseDatabase.getInstance().getReference().child("Users/").addListenerForSingleValueEvent(postListener);
 
 
         }

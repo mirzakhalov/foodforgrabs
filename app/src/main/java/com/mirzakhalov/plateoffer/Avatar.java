@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -26,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class Avatar extends AppCompatActivity implements View.OnClickListener {
 
@@ -144,9 +142,10 @@ public class Avatar extends AppCompatActivity implements View.OnClickListener {
                     Bitmap thePic = extras.getParcelable("data");
                     if(thePic != null){
                         // resizing the picture to 256 by 256 to save space
-                        thePic = Bitmap.createScaledBitmap(thePic, 256, 256, true);
-                        uploadAvatar(thePic);
                         avatar.setImageBitmap(thePic);
+                        thePic = Bitmap.createScaledBitmap(thePic, 512, 512, true);
+                        uploadAvatar(thePic);
+
                     }
                     else{
                         //TODO handle
@@ -171,12 +170,13 @@ public class Avatar extends AppCompatActivity implements View.OnClickListener {
                 Bitmap thePic = BitmapFactory.decodeFile(picturePath);
                 if(thePic != null){
 
-                    thePic = Bitmap.createScaledBitmap(thePic, 256, 256, true);
-                    uploadAvatar(thePic);
                     avatar.setImageBitmap(thePic);
+                    thePic = Bitmap.createScaledBitmap(thePic, 512, 512, true);
+                    uploadAvatar(thePic);
+
                 }
                 else{
-                    //TODO handle
+                    Log.d("gallery picture" , "It is null" );
                 }
 
             }
@@ -194,7 +194,7 @@ public class Avatar extends AppCompatActivity implements View.OnClickListener {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast toast = Toast.makeText(Avatar.this, "Something went wrong", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(Avatar.this, "Something went wrong " + exception.toString(), Toast.LENGTH_SHORT);
                 toast.show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -203,7 +203,7 @@ public class Avatar extends AppCompatActivity implements View.OnClickListener {
                 Toast toast = Toast.makeText(Avatar.this, "Upload was successfull", Toast.LENGTH_SHORT);
                 toast.show();
 
-                Intent next = new Intent(Avatar.this, MainActivity.class);
+                Intent next = new Intent(Avatar.this, LandingPage.class);
                 finish();
                 startActivity(next);
             }
