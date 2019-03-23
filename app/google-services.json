@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "703656706873",
+    "firebase_url": "https://plateoffer-aa34b.firebaseio.com",
+    "project_id": "plateoffer-aa34b",
+    "storage_bucket": "plateoffer-aa34b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703656706873:android:469fcad8edb8ea3c",
+        "android_client_info": {
+          "package_name": "com.mirzakhalov.plateoffer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703656706873-3nr5k90l9at146b2b5a24tp0n8b3qtm5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mirzakhalov.plateoffer",
+            "certificate_hash": "34475ce96c9d44e559490dd25121463abbd4a01b"
+          }
+        },
+        {
+          "client_id": "703656706873-4l9l8limk0u3e37bs4staeumjc3iof8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClfOX491ivyAFiDc1-oOZzvJZDhhO_vWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703656706873-4l9l8limk0u3e37bs4staeumjc3iof8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
