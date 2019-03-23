@@ -189,7 +189,7 @@ public class Avatar extends AppCompatActivity implements View.OnClickListener {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        String uid = getIntent().getStringExtra("uid");
+        String uid = MainActivity.getStringFromShared(this, "uid");
         UploadTask uploadTask = FirebaseStorage.getInstance().getReference().child("Avatars/" + uid + ".jpg").putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override

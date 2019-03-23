@@ -1,6 +1,8 @@
 package com.mirzakhalov.plateoffer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,11 +47,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int RC_SIGN_IN = 10;
     CallbackManager mCallbackManager;
 
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = getSharedPreferences("myApp", Context.MODE_PRIVATE);
+        editor = prefs.edit();
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -135,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             Log.d("Facebook Login", user.getDisplayName() + " " + user.getUid() + " " + user.getPhoneNumber());
-                            updateUI(user);
+                           // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -211,16 +220,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     if(uids.size() > 0){
+
+
+                        editor.putString("uid", account.getUid());
+                        editor.apply();
+
                         Intent intent = new Intent(MainActivity.this, LandingPage.class);
+                        Log.d("uid", account.getUid());
+
+
+                        //saveStringToShared(MainActivity.this, "uid", account.getUid());
                         finish();
                         startActivity(intent);
                     }
                     else{
                         Intent register = new Intent(MainActivity.this, Register.class);
+
                         register.putExtra("email", account.getEmail());
                         register.putExtra("id", account.getUid());
                         register.putExtra("name", account.getDisplayName());
                         register.putExtra("phoneNumber", account.getPhoneNumber());
+
+                        saveStringToShared(MainActivity.this, "uid", account.getUid());
+
                         startActivity(register);
                     }
                 }
@@ -237,4 +259,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
+    public static void saveStringToShared(Context context, String name, String value){
+        SharedPreferences prefs = context.getSharedPreferences("myApp", Context.MODE_PRIVATE);
+        prefs.edit().putString(name, value).apply();
+    }
+
+    public static String getStringFromShared(Context context, String name){
+        SharedPreferences prefs = context.getSharedPreferences("myApp", Context.MODE_PRIVATE);
+        return prefs.getString(name, "");
+    }
+
+
 }
