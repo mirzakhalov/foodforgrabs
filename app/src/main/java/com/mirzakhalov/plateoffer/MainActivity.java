@@ -40,6 +40,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import com.snapchat.kit.sdk.SnapLogin;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

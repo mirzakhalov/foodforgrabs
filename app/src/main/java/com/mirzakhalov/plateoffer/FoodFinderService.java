@@ -37,7 +37,6 @@ public class FoodFinderService extends FirebaseMessagingService {
             double longitude = Double.parseDouble(remoteMessage.getData().get("longitude"));
             place.setLatitude(latitude);
             place.setLongitude(longitude);
-            sendNotification("THE PLACE IS CLOSE");
             try{
                 fusedLocationClient.getLastLocation()
                         .addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -47,6 +46,7 @@ public class FoodFinderService extends FirebaseMessagingService {
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
                                     float distanceInMeters = place.distanceTo(location);
+                                    Log.d(TAG, "Distance from user in meters: " + distanceInMeters);
                                     if(distanceInMeters < 1609.34){
                                         sendNotification("THE PLACE IS CLOSE");
                                     }

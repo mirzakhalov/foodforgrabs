@@ -18,7 +18,7 @@
         <activity android:name=".OrderDetails"></activity>
         <activity android:name=".Orders" />
         <meta-data android:name="com.snapchat.kit.sdk.clientId" android:value="com.mirzakhalov.plateoffer" />
-        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="the url that will handle login completion" />
+        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="http://com.mirzakhalov.plateoffer/redirect" />
         <meta-data android:name="com.snapchat.kit.sdk.scopes" android:resource="@array/snap_connect_scopes" />
         <activity
             android:name=".LandingPage"
@@ -31,6 +31,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data
+                    android:scheme="http"
+                    android:host="com.mirzakhalov.plateoffer"
+                    android:path="/redirect"
+                    />
             </intent-filter>
         </activity>
 
