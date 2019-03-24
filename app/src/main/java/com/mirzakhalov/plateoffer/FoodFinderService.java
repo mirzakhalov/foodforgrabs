@@ -34,7 +34,7 @@ public class FoodFinderService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             final Location place = new Location("");
             double latitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
-            double longitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
+            double longitude = Double.parseDouble(remoteMessage.getData().get("longitude"));
             place.setLatitude(latitude);
             place.setLongitude(longitude);
             sendNotification("THE PLACE IS CLOSE");
@@ -43,6 +43,7 @@ public class FoodFinderService extends FirebaseMessagingService {
                         .addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
+                                Log.d(TAG, "Longitude: " + location.getLatitude() + " Latitude: " + location.getLatitude());
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
                                     float distanceInMeters = place.distanceTo(location);
