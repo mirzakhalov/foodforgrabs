@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -194,6 +195,9 @@ public class LandingPage extends AppCompatActivity
         if (id == R.id.nav_profile) {
             // Handle the camera action
         } else if (id == R.id.nav_orders) {
+
+            Intent intent = new Intent(LandingPage.this, Orders.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_payment) {
 
