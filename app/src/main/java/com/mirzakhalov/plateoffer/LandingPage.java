@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -48,6 +49,10 @@ public class LandingPage extends AppCompatActivity
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    public static String USERID = "";
+    public static String NAME = "";
+
+
 
     private TextView fullName;
     private TextView email;
@@ -61,6 +66,7 @@ public class LandingPage extends AppCompatActivity
         setContentView(R.layout.activity_landing_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -83,6 +89,7 @@ public class LandingPage extends AppCompatActivity
 
         SharedPreferences prefs = getSharedPreferences("myApp", Context.MODE_PRIVATE);
         uid = prefs.getString("uid", "");
+        USERID = uid;
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -109,39 +116,31 @@ public class LandingPage extends AppCompatActivity
 
         HashMap<String, String> info = new HashMap<>();
         info.put("count", "20");
-        info.put("originalPrice", "$99");
-        info.put("offeredPrice", "$54");
-        info.put("remaining", "12.36");
-        info.put("mealItem", "Sandwich");
+        info.put("originalPrice", "5.00");
+        info.put("offeredPrice", "1.99");
+        info.put("remaining", "45");
+        info.put("mealItem", "Original Sandwich");
+        info.put("address", "USF Marshall Food Court");
+        info.put("company", "Chick Fill A");
+        info.put("offerID", "1234");
 
         HashMap<String, String> info2 = new HashMap<>();
         info2.put("count", "24");
-        info2.put("originalPrice", "$94");
-        info2.put("offeredPrice", "$34");
+        info2.put("originalPrice", "7.99");
+        info2.put("offeredPrice", "3.99");
         info2.put("remaining", "136");
         info2.put("mealItem", "Sandwich");
+        info2.put("address", "USF Marshall Food Court");
+        info2.put("company", "Panda Express");
+        info2.put("offerID", "4321");
 
-        HashMap<String, String> info3 = new HashMap<>();
-        info3.put("count", "24");
-        info3.put("originalPrice", "$94");
-        info3.put("offeredPrice", "$34");
-        info3.put("remaining", "136");
-        info3.put("mealItem", "Sandwich");
-
-        HashMap<String, String> info4 = new HashMap<>();
-        info4.put("count", "24");
-        info4.put("originalPrice", "$94");
-        info4.put("offeredPrice", "$34");
-        info4.put("remaining", "136");
-        info4.put("mealItem", "Sandwich");
 
 
         ArrayList<HashMap<String, String>> box = new ArrayList<>();
 
         box.add(info);
         box.add(info2);
-        box.add(info3);
-        box.add(info4);
+
 
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -229,17 +228,20 @@ public class LandingPage extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_profile) {
-            // Handle the camera action
-        } else if (id == R.id.nav_orders) {
+       if (id == R.id.nav_orders) {
 
             Intent intent = new Intent(LandingPage.this, Orders.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_payment) {
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_sign_out) {
 
+           FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+           mFirebaseAuth.signOut();
+
+           Intent intent = new Intent(LandingPage.this, MainActivity.class);
+           startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

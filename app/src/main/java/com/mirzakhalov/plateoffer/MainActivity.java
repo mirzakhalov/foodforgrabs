@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int RC_SIGN_IN = 10;
     CallbackManager mCallbackManager;
 
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 

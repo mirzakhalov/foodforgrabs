@@ -1,6 +1,7 @@
 package com.mirzakhalov.plateoffer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,13 +35,20 @@ public class OfferRecyclerView extends RecyclerView.Adapter<OfferRecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.count.setText(data.get(position).get("count"));
-        holder.originalPrice.setText(data.get(position).get("originalPrice"));
+        holder.count.setText("Count: " + data.get(position).get("count"));
+        holder.originalPrice.setText("Original price: $" + data.get(position).get("originalPrice"));
         holder.mealItem.setText(data.get(position).get("mealItem"));
-        holder.offeredPrice.setText(data.get(position).get("offeredPrice"));
-        holder.remaining.setText(data.get(position).get("remaining"));
+        holder.offeredPrice.setText("Offer price: $" + data.get(position).get("offeredPrice"));
+        holder.remaining.setText("Offer expires in " + data.get(position).get("remaining") + " mins");
 
-        holder.bind(holder, position);
+        if(data.get(position).get("company").equals("Chick Fill A")){
+            holder.imgIcon.setImageResource(R.drawable.chickfila);
+
+        } else if (data.get(position).get("company").equals("Panda Express")){
+            holder.imgIcon.setImageResource(R.drawable.panda);
+
+        }
+        holder.bind(holder, position, data.get(position));
 
     }
 
@@ -73,12 +81,22 @@ public class OfferRecyclerView extends RecyclerView.Adapter<OfferRecyclerView.Vi
 
         }
 
-        public void bind(final ViewHolder holder, final int position){
+        public void bind(final ViewHolder holder, final int position, final HashMap<String, String> data){
 
             holder.container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("Click", "Clicked " + position);
+                    Intent intent = new Intent(context, OrderDetails.class);
+                    intent.putExtra("count", data.get("count"));
+                    intent.putExtra("originalPrice", data.get("originalPrice"));
+                    intent.putExtra("offeredPrice", data.get("offeredPrice"));
+                    intent.putExtra("remaining", data.get("remaining"));
+                    intent.putExtra("mealItem", data.get("mealItem"));
+                    intent.putExtra("address", data.get("address"));
+                    intent.putExtra("company", data.get("company"));
+                    intent.putExtra("offerID", data.get("offerID"));
+                    context.startActivity(intent);
                 }
             });
         }
