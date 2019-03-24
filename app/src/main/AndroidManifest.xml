@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +17,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".OrderDetails"></activity>
         <activity android:name=".Orders" />
+        <meta-data android:name="com.snapchat.kit.sdk.clientId" android:value="com.mirzakhalov.plateoffer" />
+        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="the url that will handle login completion" />
+        <meta-data android:name="com.snapchat.kit.sdk.scopes" android:resource="@array/snap_connect_scopes" />
         <activity
             android:name=".LandingPage"
             android:label="@string/title_activity_landing_page"

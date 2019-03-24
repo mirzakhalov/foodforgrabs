@@ -13,45 +13,53 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.android.gms.location.FusedLocationProviderClient;
 
 public class FoodFinderService extends FirebaseMessagingService {
     private static final String TAG = "FOOD_FOR_GRABS_FIREBASE";
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            sendNotification("THE PLACE IS CLOSE");
-
+            final Location place = new Location("");
             double latitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
-            double longitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
+            double longitude = Double.parseDouble(remoteMessage.getData().get("longitude"));
+            place.setLatitude(latitude);
+            place.setLongitude(longitude);
+            sendNotification("THE PLACE IS CLOSE");
+            try{
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                Log.d(TAG, "Longitude: " + location.getLatitude() + " Latitude: " + location.getLatitude());
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    float distanceInMeters = place.distanceTo(location);
+                                    if(distanceInMeters < 1609.34){
+                                        sendNotification("THE PLACE IS CLOSE");
+                                    }
+                                }
+                            }
+                        });
+            }
+            catch(SecurityException e){
+
+            }
 
 
             Log.d("Lat and Lon", latitude + " " + longitude);
-            final Location place = new Location("");
-            place.setLatitude(latitude);
-            place.setLongitude(longitude);
-            MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
-                @Override
-                public void gotLocation(Location location){
-                    float distanceInMeters = place.distanceTo(location);
-                    if(distanceInMeters < 1609.34){
-                        sendNotification("THE PLACE IS CLOSE");
-                    }
-                }
-            };
-
-            MyLocation myLocation = new MyLocation();
-            myLocation.getLocation(this, locationResult);
-
 
         }
 
