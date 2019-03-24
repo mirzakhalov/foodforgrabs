@@ -8,4 +8,9 @@
     tools:context=".LandingPage"
     tools:showIn="@layout/app_bar_landing_page">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/recycler_view_item" />
 </android.support.constraint.ConstraintLayout>

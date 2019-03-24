@@ -14,6 +14,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -35,7 +37,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,14 +62,6 @@ public class LandingPage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -88,8 +84,6 @@ public class LandingPage extends AppCompatActivity
         SharedPreferences prefs = getSharedPreferences("myApp", Context.MODE_PRIVATE);
         uid = prefs.getString("uid", "");
 
-       // uid = MainActivity.getStringFromShared(this, "uid");
-
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,6 +104,49 @@ public class LandingPage extends AppCompatActivity
         };
 
         FirebaseDatabase.getInstance().getReference().child("Users/" + uid + "/profile").addListenerForSingleValueEvent(eventListener);
+
+
+
+        HashMap<String, String> info = new HashMap<>();
+        info.put("count", "20");
+        info.put("originalPrice", "$99");
+        info.put("offeredPrice", "$54");
+        info.put("remaining", "12.36");
+        info.put("mealItem", "Sandwich");
+
+        HashMap<String, String> info2 = new HashMap<>();
+        info2.put("count", "24");
+        info2.put("originalPrice", "$94");
+        info2.put("offeredPrice", "$34");
+        info2.put("remaining", "136");
+        info2.put("mealItem", "Sandwich");
+
+        HashMap<String, String> info3 = new HashMap<>();
+        info3.put("count", "24");
+        info3.put("originalPrice", "$94");
+        info3.put("offeredPrice", "$34");
+        info3.put("remaining", "136");
+        info3.put("mealItem", "Sandwich");
+
+        HashMap<String, String> info4 = new HashMap<>();
+        info4.put("count", "24");
+        info4.put("originalPrice", "$94");
+        info4.put("offeredPrice", "$34");
+        info4.put("remaining", "136");
+        info4.put("mealItem", "Sandwich");
+
+
+        ArrayList<HashMap<String, String>> box = new ArrayList<>();
+
+        box.add(info);
+        box.add(info2);
+        box.add(info3);
+        box.add(info4);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        OfferRecyclerView adapter = new OfferRecyclerView(this, box);
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -216,6 +253,8 @@ public class LandingPage extends AppCompatActivity
             public void onSuccess(Uri uri) {
                 //mCallback.onCallback(uri);
                 Log.d("Image download", "success");
+                Picasso.with(LandingPage.this).load(uri).into(avatar);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
