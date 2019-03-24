@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -41,8 +41,10 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:fontFamily="serif"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColorLink="@color/cardview_dark_background"
                     android:textSize="20sp" />
 
                 <TextView
@@ -51,8 +53,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="10dp"
+                    android:fontFamily="serif"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColorLink="@color/colorAccent"
                     android:textSize="20sp" />
 
                 <TextView
@@ -61,8 +65,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="10dp"
+                    android:fontFamily="serif"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColorLink="@color/colorPrimaryDark"
                     android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
@@ -74,8 +80,10 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColorLink="@color/com_facebook_button_background_color_focused_disabled"
             android:textSize="20sp" />
 
         <TextView
@@ -84,8 +92,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-medium"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColorLink="@color/cardview_dark_background"
             android:textSize="20sp" />
     </LinearLayout>
 </FrameLayout>
